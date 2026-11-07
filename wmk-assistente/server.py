@@ -12,6 +12,7 @@ import base64
 import re
 import mimetypes
 import job_manager
+import qualidade_video
 
 ROOT = Path(__file__).resolve().parent
 PROJECT = ROOT.parent
@@ -55,6 +56,11 @@ class Handler(BaseHTTPRequestHandler):
                 if job_manager.VIDEOS.resolve() not in file.parents or not file.is_file(): return self.send_error(404)
                 return self.send_bytes(file.read_bytes(), 'video/mp4')
             return self.send_error(404)
+        elif re.fullmatch(r'/api/exportacao/[a-f0-9]{32}', path):
+            job_id = path.rsplit('/', 1)[-1]
+            file = job_manager.VIDEOS / ('export-' + job_id + '.mp4')
+            if not file.is_file(): return self.send_error(404)
+            return self.send_bytes(file.read_bytes(), 'video/mp4')
         elif path == '/':
             self.send_bytes((ROOT/'index.html').read_bytes(), 'text/html; charset=utf-8')
         elif path == '/api/audios':
@@ -101,6 +107,17 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send_json(job, 202)
                 except ValueError as exc:
                     return self.send_json({'erro':str(exc)}, 400)
+            elif re.fullmatch(r'/api/jobs/[a-f0-9]{32}/exportar', self.path):
+                job_id = self.path.split('/')[3]
+                job = job_manager.get(job_id)
+                if not job or job['estado'] != 'concluido' or not job['arquivo']:
+                    return self.send_json({'erro':'Tarefa concluida nao encontrada'},404)
+                origem = (job_manager.VIDEOS / job['arquivo']).resolve()
+                if job_manager.VIDEOS.resolve() not in origem.parents:
+                    return self.send_json({'erro':'Caminho invalido'},400)
+                destino = job_manager.VIDEOS / ('export-' + job_id + '.mp4')
+                qualidade_video.exportar(origem, destino, data.get('qualidade', {}), ffmpeg=r'D:\ffmpeg\bin\ffmpeg.exe')
+                return self.send_json({'url':'/api/exportacao/' + job_id, 'arquivo':destino.name})
             elif re.fullmatch(r'/api/jobs/[a-f0-9]{32}/cancel', self.path):
                 job = job_manager.cancel(self.path.split('/')[3])
                 return self.send_json(job) if job else self.send_error(404)
