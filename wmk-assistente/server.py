@@ -39,6 +39,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
+        if path == '/biblioteca':
+            return self.send_bytes((ROOT/'biblioteca.html').read_bytes(), 'text/html; charset=utf-8')
         if path == '/monitor':
             self.send_bytes((ROOT/'monitor.html').read_bytes(), 'text/html; charset=utf-8')
         elif path.startswith('/api/jobs/'):
@@ -63,6 +65,15 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_bytes(file.read_bytes(), 'video/mp4')
         elif path == '/':
             self.send_bytes((ROOT/'index.html').read_bytes(), 'text/html; charset=utf-8')
+        elif path == '/api/videos':
+            videos = [{'arquivo':f.name,'bytes':f.stat().st_size} for f in sorted(job_manager.VIDEOS.glob('*.mp4'), key=lambda x:x.stat().st_mtime, reverse=True) if f.is_file() and re.fullmatch(r'[0-9_.-]+\.mp4', f.name)]
+            return self.send_json({'videos':videos})
+        elif path.startswith('/api/video-biblioteca/'):
+            name = path.rsplit('/',1)[-1]
+            if not re.fullmatch(r'[0-9_.-]+\.mp4', name): return self.send_error(404)
+            file = job_manager.VIDEOS / name
+            if not file.is_file(): return self.send_error(404)
+            return self.send_bytes(file.read_bytes(),'video/mp4')
         elif path == '/api/audios':
             self.send_json({'audios':[f.name for f in sorted(OUT.glob('wmk-*.wav')) if re.fullmatch(r'wmk-[a-f0-9-]{36}\.wav',f.name)]})
         elif path.startswith('/manuais/'):
@@ -107,6 +118,16 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send_json(job, 202)
                 except ValueError as exc:
                     return self.send_json({'erro':str(exc)}, 400)
+            elif self.path == '/api/videos/exportar':
+                name = str(data.get('arquivo',''))
+                if not re.fullmatch(r'[0-9_.-]+\.mp4', name):
+                    return self.send_json({'erro':'Nome de video invalido'},400)
+                origem = job_manager.VIDEOS / name
+                if not origem.is_file(): return self.send_json({'erro':'Video nao encontrado'},404)
+                export_id = uuid.uuid4().hex
+                destino = job_manager.VIDEOS / ('export-' + export_id + '.mp4')
+                qualidade_video.exportar(origem, destino, data.get('qualidade',{}), ffmpeg=r'D:\ffmpeg\bin\ffmpeg.exe')
+                return self.send_json({'url':'/api/exportacao/'+export_id,'arquivo':destino.name})
             elif re.fullmatch(r'/api/jobs/[a-f0-9]{32}/exportar', self.path):
                 job_id = self.path.split('/')[3]
                 job = job_manager.get(job_id)
