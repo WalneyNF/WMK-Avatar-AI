@@ -1,5 +1,7 @@
 # WMK Assistente com Rosto — Instalacao e diagnostico (Windows)
 
+**Documentacao organizada:** [abrir indice dos manuais](manuais/INDICE.md). O indice e os cinco guias separados sao a referencia atualizada; este arquivo preserva o historico de instalacao e diagnostico.
+
 **Integracao e documentacao:** Walney Moreira Klein — walneyk@hotmail.com
 
 Projeto derivado do SadTalker (OpenTalker); manter creditos e licencas do projeto original.
