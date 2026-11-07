@@ -2,7 +2,7 @@
 
 **Repositorio oficial WMK:** https://github.com/WalneyNF/WMK-Avatar-AI
 
-**Documentacao organizada:** [Indice dos manuais](wmk-assistente/manuais/INDICE.md). A plataforma WMK utiliza o motor SadTalker original, com os creditos e licencas preservados.
+**Guia público de instalação e hardware:** [Instalar, configurar e entender parâmetros (HTML)](wmk-assistente/manuais/instalacao-publica.html). **Central de manuais:** [Índice HTML](wmk-assistente/manuais/index.html). **Histórico técnico:** [Índice Markdown](wmk-assistente/manuais/INDICE.md). A plataforma WMK utiliza o motor SadTalker original, com os creditos e licencas preservados.
 
 > **Projeto original:** [OpenTalker/SadTalker](https://github.com/OpenTalker/SadTalker)  
 > **Fork e integracao WMK:** [WalneyNF/WMK-Avatar-AI](https://github.com/WalneyNF/WMK-Avatar-AI)  
@@ -34,7 +34,7 @@ Este fork esta sendo preparado para um **assistente com rosto**:
 4. O SadTalker recebe uma imagem e esse WAV para gerar um MP4 animado.
 5. Futuramente, a interface podera exibir o avatar e reproduzir o video.
 
-**Estado verificado:** Ollama e WAV funcionando; os pesos de 256 px foram baixados; a geracao do MP4 ainda NAO foi validada.
+**Estado verificado em 07/11/2026:** Ollama e WAV funcionando; pesos de 256 px instalados; MP4 real gerado com 105 quadros (Face Renderer 1h07min32s em CPU). Estúdio, monitor e biblioteca implementados; nove testes automatizados passaram. Instalação limpa em outra máquina e CUDA ainda não foram validadas.
 
 Acesse a documentacao de instalacao especifica desta maquina em [wmk-assistente/README-PTBR.md](wmk-assistente/README-PTBR.md).
 

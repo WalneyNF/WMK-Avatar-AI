@@ -2,6 +2,8 @@
 
 **Repositorio:** https://github.com/WalneyNF/WMK-Avatar-AI
 
+**Atualização de 07/11/2026:** um MP4 real foi gerado com sucesso; as afirmações abaixo de que o MP4 ainda não foi validado são histórico anterior. Para instalar em outro computador, consulte primeiro o [manual público atualizado de instalação, hardware e parâmetros](manuais/instalacao-publica.html).
+
 **Documentacao organizada:** [abrir indice dos manuais](manuais/INDICE.md). O indice e os cinco guias separados sao a referencia atualizada; este arquivo preserva o historico de instalacao e diagnostico.
 
 **Integracao e documentacao:** Walney Moreira Klein — walneyk@hotmail.com

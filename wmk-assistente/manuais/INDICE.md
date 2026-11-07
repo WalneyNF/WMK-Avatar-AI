@@ -10,4 +10,6 @@
 4. [Testes e diagnóstico](04-TESTES.md)
 5. [Roadmap](05-ROADMAP.md)
 
-**Estado em 07/11/2026:** chat Ollama e WAV já testados; seleção de avatares implementada, GET da lista testado; upload de imagem real ainda não validado; geração MP4 pendente. Dependencias `pooch`, `audioread` e `resampy` corrigidas; `inference.py --help` executou com codigo 0. Primeiro teste real de MP4 falhou na extracao facial: `np.float` foi removido do NumPy moderno (`src/face3d/util/my_awing_arch.py`). Nenhum MP4 confirmado. Esta documentacao e publicada no GitHub.
+**Guia atualizado para novos usuários:** [Instalação, hardware, configuração e parâmetros (HTML)](instalacao-publica.html). [Manual completo do Estúdio](estudio-geracao.html). [Exportação e qualidade MP4](qualidade-video.html).
+
+**Estado atualizado em 07/11/2026:** a falha `np.float` foi corrigida; um MP4 real de 105 quadros foi gerado e reproduzido, com Face Renderer de 1h07min32s em CPU. Estúdio, monitor e biblioteca estão implementados. Nove testes automatizados passaram. Instalação limpa em outra máquina e CUDA ainda não foram validadas. Os guias Markdown antigos preservam o histórico técnico e podem mencionar etapas que eram pendentes.
