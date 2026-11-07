@@ -1,7 +1,11 @@
-# SadTalker — Documentacao em portugues brasileiro
+# WMK Avatar AI — Plataforma de Avatares Inteligentes (base SadTalker)
+
+**Repositorio oficial WMK:** https://github.com/WalneyNF/WMK-Avatar-AI
+
+**Documentacao organizada:** [Indice dos manuais](wmk-assistente/manuais/INDICE.md). A plataforma WMK utiliza o motor SadTalker original, com os creditos e licencas preservados.
 
 > **Projeto original:** [OpenTalker/SadTalker](https://github.com/OpenTalker/SadTalker)  
-> **Fork e integracao WMK:** [WalneyNF/SadTalker](https://github.com/WalneyNF/SadTalker)  
+> **Fork e integracao WMK:** [WalneyNF/WMK-Avatar-AI](https://github.com/WalneyNF/WMK-Avatar-AI)  
 > **Integracao, traducao e documentacao:** Walney Moreira Klein — walneyk@hotmail.com  
 > **README original em ingles:** [README.original.en.md](README.original.en.md)
 
@@ -50,7 +54,7 @@ O projeto original sugere instalar Python 3.8, Git e FFmpeg, clonar o repositori
 ### Instalacao classica (referencia do projeto original)
 
 ```bat
-git clone https://github.com/WalneyNF/SadTalker.git
+git clone https://github.com/WalneyNF/WMK-Avatar-AI.git
 cd SadTalker
 python -m venv .venv
 .venv\Scripts\activate
@@ -163,7 +167,7 @@ Abra a interface local em [http://127.0.0.1:18765/](http://127.0.0.1:18765/) **c
 
 O painel permite escrever texto, gerar um WAV, ouvir e salvar o arquivo. Os WAVs sao armazenados em `wmk-assistente/resultados/`. O servidor escuta apenas em `127.0.0.1`, nao e um servico publico.
 
-A integracao completa WAV → SadTalker → MP4 permanece em desenvolvimento.
+A integracao completa WAV → SadTalker → MP4 permanece em desenvolvimento. O primeiro teste real em CPU falhou em `np.float` removido do NumPy moderno; consulte [testes](wmk-assistente/manuais/04-TESTES.md).
 
 ## 8. Solucao de problemas
 

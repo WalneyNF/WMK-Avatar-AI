@@ -4,9 +4,10 @@
 
 ## P0 — Motor de vídeo
 
-- [ ] Instalar `pooch` e resolver eventuais imports seguintes.
+- [x] Instalar `pooch`, `audioread`, `resampy` e confirmar inicializacao do `inference.py --help`.
 - [ ] Conferir `uv pip check`.
-- [ ] Testar SadTalker CPU 256 com WAV e foto.
+- [ ] Corrigir incompatibilidade `np.float` em `src/face3d/util/my_awing_arch.py`.
+- [ ] Repetir teste SadTalker CPU 256 com WAV e foto; tentativa anterior falhou na extracao facial.
 - [ ] Validar MP4 e sincronização.
 
 ## P1 — WMK

@@ -10,7 +10,7 @@ Projeto: `D:\Ferramentas\SadTalker`. Python 3.8.20 isolado em `.python/`, virtua
 - BasicSR tentou compilar `lmdb==2.1.1`; falhou por ausência de Microsoft Visual C++ 14+.
 - Contorno aplicado com sucesso: `lmdb==1.4.1` (wheel), `basicsr==1.4.2 --no-deps`, `gfpgan==1.3.8 --no-deps`.
 - `decorator==5.1.1` instalado após erro de importação no librosa.
-- **Último erro ainda pendente:** `ModuleNotFoundError: No module named 'pooch'`.
+- **Resolvido em 07/11/2026:** `pooch==1.8.2`, `audioread==3.0.1` e `resampy==0.4.3` instalados. `inference.py --help` executou com codigo 0. O teste de MP4 baixou pesos auxiliares, mas falhou na extracao facial: `AttributeError: module 'numpy' has no attribute 'float'` em `src/face3d/util/my_awing_arch.py`. Corrigir compatibilidade e repetir o teste.
 
 ## Comandos comprovados
 

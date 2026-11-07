@@ -1,4 +1,6 @@
-# WMK Assistente com Rosto — Instalacao e diagnostico (Windows)
+# WMK Avatar AI — Assistente com Rosto, instalacao e diagnostico (Windows)
+
+**Repositorio:** https://github.com/WalneyNF/WMK-Avatar-AI
 
 **Documentacao organizada:** [abrir indice dos manuais](manuais/INDICE.md). O indice e os cinco guias separados sao a referencia atualizada; este arquivo preserva o historico de instalacao e diagnostico.
 

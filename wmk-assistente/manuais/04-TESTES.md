@@ -10,8 +10,8 @@
 | Chat Ollama | OK anterior | Resposta HTTP 200 com modelo local |
 | Gerar WAV | OK anterior | Arquivo WAV RIFF válido |
 | BasicSR/GFPGAN | INSTALADOS | Instalação terminou com código 0 |
-| inference.py --help | FALHOU | Falta `pooch` |
-| MP4 do SadTalker | PENDENTE | Não existe geração comprovada |
+| inference.py --help | OK | Saida completa, codigo 0 apos corrigir dependencias |
+| MP4 do SadTalker | FALHOU | `np.float` ausente no NumPy moderno, durante extracao facial |
 | Publicação desta revisão | PENDENTE | Requer commit e push |
 
 ## Critérios de conclusão
