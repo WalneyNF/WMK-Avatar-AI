@@ -97,7 +97,7 @@ class Handler(BaseHTTPRequestHandler):
             data=json.loads(self.rfile.read(size))
             if self.path=='/api/jobs':
                 try:
-                    job = job_manager.start(str(data.get('audio','')), str(data.get('avatar','')))
+                    job = job_manager.start(str(data.get('audio','')), str(data.get('avatar','')), data.get('opcoes'))
                     return self.send_json(job, 202)
                 except ValueError as exc:
                     return self.send_json({'erro':str(exc)}, 400)

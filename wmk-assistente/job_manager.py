@@ -94,7 +94,19 @@ def _run(job, command):
         with LOCK:
             job.pop("process", None)
 
-def start(audio_name, avatar_name):
+def start(audio_name, avatar_name, options=None):
+    options = options or {}
+    if not isinstance(options, dict):
+        raise ValueError('Configuracoes invalidas')
+    batch_size = options.get('batch_size', 2)
+    preprocess = options.get('preprocess', 'crop')
+    still = options.get('still', False)
+    if type(batch_size) is not int or batch_size not in (1, 2, 4):
+        raise ValueError('Lote permitido: 1, 2 ou 4')
+    if preprocess not in ('crop', 'resize'):
+        raise ValueError('Preprocessamento invalido')
+    if type(still) is not bool:
+        raise ValueError('Modo estatico invalido')
     if not re.fullmatch(r"wmk-[a-f0-9-]{36}\.wav", audio_name):
         raise ValueError("Arquivo WAV invalido")
     if not re.fullmatch(r"avatar-[a-f0-9]{12}\.(png|jpg|jpeg|webp)", avatar_name):
@@ -115,6 +127,9 @@ def start(audio_name, avatar_name):
         JOBS[job_id] = job
     VIDEOS.mkdir(parents=True, exist_ok=True)
     command = [sys.executable, "-u", str(PROJECT / "inference.py"), "--driven_audio", str(audio), "--source_image", str(avatar), "--cpu", "--size", "256", "--result_dir", str(VIDEOS)]
+    command.extend(['--batch_size', str(batch_size), '--preprocess', preprocess])
+    if still:
+        command.append('--still')
     _update(job, estado="executando")
     t = threading.Thread(target=_run, args=(job, command), daemon=True)
     t.start()
