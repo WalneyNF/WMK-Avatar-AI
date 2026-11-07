@@ -2,7 +2,7 @@
 
 **Repositorio oficial WMK:** https://github.com/WalneyNF/WMK-Avatar-AI
 
-**Guia público de instalação e hardware:** [Instalar, configurar e entender parâmetros (HTML)](wmk-assistente/manuais/instalacao-publica.html). **Central de manuais:** [Índice HTML](wmk-assistente/manuais/index.html). **Histórico técnico:** [Índice Markdown](wmk-assistente/manuais/INDICE.md). A plataforma WMK utiliza o motor SadTalker original, com os creditos e licencas preservados.
+**Curso completo de todas as telas:** [Assistente, Monitor, Estúdio, Biblioteca e vídeos de qualidade](wmk-assistente/manuais/curso-completo-telas.html). **Guia público de instalação e hardware:** [Instalar, configurar e entender parâmetros (HTML)](wmk-assistente/manuais/instalacao-publica.html). **Central de manuais:** [Índice HTML](wmk-assistente/manuais/index.html). **Histórico técnico:** [Índice Markdown](wmk-assistente/manuais/INDICE.md). A plataforma WMK utiliza o motor SadTalker original, com os creditos e licencas preservados.
 
 > **Projeto original:** [OpenTalker/SadTalker](https://github.com/OpenTalker/SadTalker)  
 > **Fork e integracao WMK:** [WalneyNF/WMK-Avatar-AI](https://github.com/WalneyNF/WMK-Avatar-AI)  
