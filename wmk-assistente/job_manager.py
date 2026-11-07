@@ -129,6 +129,21 @@ def start(audio_name, avatar_name, options=None):
     still = options.get('still', False)
     threads = options.get('threads', 0)
     preview_seconds = options.get('preview_seconds', 0)
+    pose_style = options.get('pose_style', 0)
+    expression_scale = options.get('expression_scale', 1.0)
+    yaw = options.get('yaw', 0)
+    pitch = options.get('pitch', 0)
+    roll = options.get('roll', 0)
+    face3dvis = options.get('face3dvis', False)
+    verbose = options.get('verbose', False)
+    if type(pose_style) is not int or not 0 <= pose_style <= 45:
+        raise ValueError('Estilo de pose deve estar entre 0 e 45')
+    if type(expression_scale) not in (int, float) or not 0.2 <= expression_scale <= 2.0:
+        raise ValueError('Escala de expressao deve estar entre 0.2 e 2.0')
+    if any(type(v) is not int or not -30 <= v <= 30 for v in (yaw, pitch, roll)):
+        raise ValueError('Angulos devem estar entre -30 e 30 graus')
+    if type(face3dvis) is not bool or type(verbose) is not bool:
+        raise ValueError('Opcoes de diagnostico invalidas')
     if type(threads) is not int or threads not in (0, 1, 2, 4):
         raise ValueError('Threads permitidas: automatico, 1, 2 ou 4')
     if type(preview_seconds) is not int or preview_seconds not in (0, 2, 3, 5):
@@ -159,7 +174,14 @@ def start(audio_name, avatar_name, options=None):
         JOBS[job_id] = job
     VIDEOS.mkdir(parents=True, exist_ok=True)
     command = [sys.executable, "-u", str(PROJECT / "inference.py"), "--driven_audio", str(audio), "--source_image", str(avatar), "--cpu", "--size", "256", "--result_dir", str(VIDEOS)]
-    command.extend(['--batch_size', str(batch_size), '--preprocess', preprocess])
+    command.extend(['--batch_size', str(batch_size), '--preprocess', preprocess, '--pose_style', str(pose_style), '--expression_scale', str(expression_scale)])
+    for key, value in (('input_yaw', yaw), ('input_pitch', pitch), ('input_roll', roll)):
+        if value:
+            command.extend(['--' + key, str(value)])
+    if face3dvis:
+        command.append('--face3dvis')
+    if verbose:
+        command.append('--verbose')
     if still:
         command.append('--still')
     _update(job, estado="executando")
