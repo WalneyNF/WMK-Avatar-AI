@@ -59,8 +59,12 @@ class Handler(BaseHTTPRequestHandler):
             self.send_bytes((ROOT/'index.html').read_bytes(), 'text/html; charset=utf-8')
         elif path == '/api/audios':
             self.send_json({'audios':[f.name for f in sorted(OUT.glob('wmk-*.wav')) if re.fullmatch(r'wmk-[a-f0-9-]{36}\.wav',f.name)]})
-        elif path == '/manuais/index.html':
-            self.send_bytes((ROOT/'manuais'/'index.html').read_bytes(), 'text/html; charset=utf-8')
+        elif path.startswith('/manuais/'):
+            name = path.split('/')[-1]
+            if not re.fullmatch(r'[a-z0-9-]+\.html', name): return self.send_error(404)
+            file = ROOT / 'manuais' / name
+            if not file.is_file(): return self.send_error(404)
+            self.send_bytes(file.read_bytes(), 'text/html; charset=utf-8')
         elif path == '/api/avatares':
             self.send_json({'avatares':[{'arquivo':f.name,'url':'/api/avatar/'+f.name} for f in sorted(AVATARS.iterdir()) if f.is_file() and f.suffix.lower() in ('.png','.jpg','.jpeg','.webp')]})
         elif path.startswith('/api/avatar/'):
