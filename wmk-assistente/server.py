@@ -10,6 +10,8 @@ import uuid
 import tempfile
 import base64
 import re
+import mimetypes
+import job_manager
 
 ROOT = Path(__file__).resolve().parent
 PROJECT = ROOT.parent
@@ -36,8 +38,29 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
-        if path == '/':
+        if path == '/monitor':
+            self.send_bytes((ROOT/'monitor.html').read_bytes(), 'text/html; charset=utf-8')
+        elif path.startswith('/api/jobs/'):
+            parts = path.strip('/').split('/')
+            if len(parts) == 3 and re.fullmatch(r'[a-f0-9]{32}', parts[2]):
+                job = job_manager.get(parts[2])
+                return self.send_json(job) if job else self.send_error(404)
+            return self.send_error(404)
+        elif path.startswith('/api/video-resultado/'):
+            parts = path.strip('/').split('/')
+            if len(parts) == 3 and re.fullmatch(r'[a-f0-9]{32}', parts[2]):
+                job = job_manager.get(parts[2])
+                if not job or job['estado'] != 'concluido' or not job['arquivo']: return self.send_error(404)
+                file = (job_manager.VIDEOS / job['arquivo']).resolve()
+                if job_manager.VIDEOS.resolve() not in file.parents or not file.is_file(): return self.send_error(404)
+                return self.send_bytes(file.read_bytes(), 'video/mp4')
+            return self.send_error(404)
+        elif path == '/':
             self.send_bytes((ROOT/'index.html').read_bytes(), 'text/html; charset=utf-8')
+        elif path == '/api/audios':
+            self.send_json({'audios':[f.name for f in sorted(OUT.glob('wmk-*.wav')) if re.fullmatch(r'wmk-[a-f0-9-]{36}\.wav',f.name)]})
+        elif path == '/manuais/index.html':
+            self.send_bytes((ROOT/'manuais'/'index.html').read_bytes(), 'text/html; charset=utf-8')
         elif path == '/api/avatares':
             self.send_json({'avatares':[{'arquivo':f.name,'url':'/api/avatar/'+f.name} for f in sorted(AVATARS.iterdir()) if f.is_file() and f.suffix.lower() in ('.png','.jpg','.jpeg','.webp')]})
         elif path.startswith('/api/avatar/'):
@@ -68,7 +91,16 @@ class Handler(BaseHTTPRequestHandler):
             size=int(self.headers.get('Content-Length','0'))
             if size<1 or size>8000000: return self.send_json({'erro':'Tamanho invalido'},413)
             data=json.loads(self.rfile.read(size))
-            if self.path=='/api/avatares':
+            if self.path=='/api/jobs':
+                try:
+                    job = job_manager.start(str(data.get('audio','')), str(data.get('avatar','')))
+                    return self.send_json(job, 202)
+                except ValueError as exc:
+                    return self.send_json({'erro':str(exc)}, 400)
+            elif re.fullmatch(r'/api/jobs/[a-f0-9]{32}/cancel', self.path):
+                job = job_manager.cancel(self.path.split('/')[3])
+                return self.send_json(job) if job else self.send_error(404)
+            elif self.path=='/api/avatares':
                 encoded=str(data.get('imagem',''))
                 ext=str(data.get('extensao','')).lower()
                 if ext not in ('png','jpg','jpeg','webp'): return self.send_json({'erro':'Formato nao permitido'},400)
