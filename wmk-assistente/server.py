@@ -39,6 +39,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
+        if path == '/estudio':
+            return self.send_bytes((ROOT/'estudio.html').read_bytes(), 'text/html; charset=utf-8')
         if path == '/biblioteca':
             return self.send_bytes((ROOT/'biblioteca.html').read_bytes(), 'text/html; charset=utf-8')
         if path == '/monitor':
