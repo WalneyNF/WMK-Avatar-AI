@@ -1,5 +1,8 @@
 """Gerenciador local de tarefas de video do WMK Avatar AI."""
 import json
+import os
+import wave
+import contextlib
 import re
 import subprocess
 import sys
@@ -22,7 +25,7 @@ MAX_JOBS = 30
 
 def snapshot(job):
     with LOCK:
-        return {k: (list(v) if k == 'logs' else v) for k, v in job.items() if k not in ("process", "thread", "folder_before")}
+        return {k: (list(v) if k == 'logs' else v) for k, v in job.items() if k not in ("process", "thread", "folder_before", "preview_path")}
 
 def get(job_id):
     with LOCK:
@@ -52,9 +55,27 @@ def _parse(job, line):
     if "video is saved" in line.lower() or "saving video" in line.lower():
         _update(job, etapa=PHASES[6], etapa_indice=6, percentual_etapa=0)
 
-def _run(job, command):
+def _run(job, command, threads=0, preview_seconds=0):
     try:
         kwargs = {"stdout": subprocess.PIPE, "stderr": subprocess.STDOUT, "text": True, "bufsize": 1, "cwd": str(PROJECT), "errors": "replace"}
+        if threads:
+            env = os.environ.copy()
+            env['OMP_NUM_THREADS'] = str(threads)
+            env['MKL_NUM_THREADS'] = str(threads)
+            kwargs['env'] = env
+        if preview_seconds:
+            original = Path(command[command.index('--driven_audio') + 1])
+            preview = OUT / ('preview-' + job['id'] + '.wav')
+            with contextlib.closing(wave.open(str(original), 'rb')) as source:
+                params = source.getparams()
+                frames = source.readframes(min(source.getnframes(), int(params.framerate * preview_seconds)))
+                if not frames:
+                    raise ValueError('Audio WAV vazio')
+                with contextlib.closing(wave.open(str(preview), 'wb')) as dest:
+                    dest.setparams(params)
+                    dest.writeframes(frames)
+            command[command.index('--driven_audio') + 1] = str(preview)
+            job['preview_path'] = str(preview)
         if sys.platform == "win32":
             kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
         p = subprocess.Popen(command, **kwargs)
@@ -91,6 +112,11 @@ def _run(job, command):
     except Exception as exc:
         _update(job, estado="erro", erro=str(exc))
     finally:
+        if job.get('preview_path'):
+            try:
+                Path(job['preview_path']).unlink(missing_ok=True)
+            except OSError:
+                pass
         with LOCK:
             job.pop("process", None)
 
@@ -101,6 +127,12 @@ def start(audio_name, avatar_name, options=None):
     batch_size = options.get('batch_size', 2)
     preprocess = options.get('preprocess', 'crop')
     still = options.get('still', False)
+    threads = options.get('threads', 0)
+    preview_seconds = options.get('preview_seconds', 0)
+    if type(threads) is not int or threads not in (0, 1, 2, 4):
+        raise ValueError('Threads permitidas: automatico, 1, 2 ou 4')
+    if type(preview_seconds) is not int or preview_seconds not in (0, 2, 3, 5):
+        raise ValueError('Duracao permitida: completa, 2, 3 ou 5 segundos')
     if type(batch_size) is not int or batch_size not in (1, 2, 4):
         raise ValueError('Lote permitido: 1, 2 ou 4')
     if preprocess not in ('crop', 'resize'):
@@ -131,7 +163,7 @@ def start(audio_name, avatar_name, options=None):
     if still:
         command.append('--still')
     _update(job, estado="executando")
-    t = threading.Thread(target=_run, args=(job, command), daemon=True)
+    t = threading.Thread(target=_run, args=(job, command, threads, preview_seconds), daemon=True)
     t.start()
     return snapshot(job)
 
