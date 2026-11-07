@@ -1,249 +1,199 @@
-<div align="center">
+# SadTalker — Documentacao em portugues brasileiro
 
-<img src='https://user-images.githubusercontent.com/4397546/229094115-862c747e-7397-4b54-ba4a-bd368bfe2e0f.png' width='500px'/>
+> **Projeto original:** [OpenTalker/SadTalker](https://github.com/OpenTalker/SadTalker)  
+> **Fork e integracao WMK:** [WalneyNF/SadTalker](https://github.com/WalneyNF/SadTalker)  
+> **Integracao, traducao e documentacao:** Walney Moreira Klein — walneyk@hotmail.com  
+> **README original em ingles:** [README.original.en.md](README.original.en.md)
 
+![Demonstracao do SadTalker](https://user-images.githubusercontent.com/4397546/222490039-b1f6156b-bf00-405b-9fda-0c9a9156f991.gif)
 
-<!--<h2> 😭 SadTalker： <span style="font-size:12px">Learning Realistic 3D Motion Coefficients for Stylized Audio-Driven Single Image Talking Face Animation </span> </h2> -->
+**Em poucas palavras:** uma fotografia ou imagem de rosto + um arquivo de audio = um video com o rosto falando.
 
-  <a href='https://arxiv.org/abs/2211.12194'><img src='https://img.shields.io/badge/ArXiv-PDF-red'></a> &nbsp; <a href='https://sadtalker.github.io'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Winfredy/SadTalker/blob/main/quick_demo.ipynb) &nbsp; [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/vinthony/SadTalker) &nbsp; [![sd webui-colab](https://img.shields.io/badge/Automatic1111-Colab-green)](https://colab.research.google.com/github/camenduru/stable-diffusion-webui-colab/blob/main/video/stable/stable_diffusion_1_5_video_webui_colab.ipynb) &nbsp; <br> [![Replicate](https://replicate.com/cjwbw/sadtalker/badge)](https://replicate.com/cjwbw/sadtalker) [![Discord](https://dcbadge.vercel.app/api/server/rrayYqZ4tf?style=flat)](https://discord.gg/rrayYqZ4tf)
+O SadTalker gera movimentos faciais e de cabeca a partir de uma imagem e um audio. Foi apresentado na CVPR 2023. Leia o [artigo cientifico](https://arxiv.org/abs/2211.12194) e visite a [pagina do projeto](https://sadtalker.github.io).
 
-<div>
-    <a target='_blank'>Wenxuan Zhang <sup>*,1,2</sup> </a>&emsp;
-    <a href='https://vinthony.github.io/' target='_blank'>Xiaodong Cun <sup>*,2</a>&emsp;
-    <a href='https://xuanwangvc.github.io/' target='_blank'>Xuan Wang <sup>3</sup></a>&emsp;
-    <a href='https://yzhang2016.github.io/' target='_blank'>Yong Zhang <sup>2</sup></a>&emsp;
-    <a href='https://xishen0220.github.io/' target='_blank'>Xi Shen <sup>2</sup></a>&emsp; </br>
-    <a href='https://yuguo-xjtu.github.io/' target='_blank'>Yu Guo<sup>1</sup> </a>&emsp;
-    <a href='https://scholar.google.com/citations?hl=zh-CN&user=4oXBp9UAAAAJ' target='_blank'>Ying Shan <sup>2</sup> </a>&emsp;
-    <a target='_blank'>Fei Wang <sup>1</sup> </a>&emsp;
-</div>
-<br>
-<div>
-    <sup>1</sup> Xi'an Jiaotong University &emsp; <sup>2</sup> Tencent AI Lab &emsp; <sup>3</sup> Ant Group &emsp; 
-</div>
-<br>
-<i><strong><a href='https://arxiv.org/abs/2211.12194' target='_blank'>CVPR 2023</a></strong></i>
-<br>
-<br>
+## 1. Destaques
 
+- Licenca do codigo atualizada para **Apache 2.0**, conforme README original. Confira separadamente as licencas dos modelos, arquivos e dependencias.
+- Animacao de retratos, imagens inteiras e personagens, sujeita a deteccao facial.
+- Modos de imagem parada (`--still`), referencia e redimensionamento.
+- Opcao de aprimoramento de rosto com GFPGAN (requer pesos adicionais).
+- Demonstracoes: [Hugging Face](https://huggingface.co/spaces/vinthony/SadTalker), [Google Colab](https://colab.research.google.com/github/Winfredy/SadTalker/blob/main/quick_demo.ipynb) e [Discord](https://discord.gg/rrayYqZ4tf).
+- Integracao comunitaria com [Stable Diffusion WebUI](docs/webui_extension.md).
 
-![sadtalker](https://user-images.githubusercontent.com/4397546/222490039-b1f6156b-bf00-405b-9fda-0c9a9156f991.gif)
+## 2. O que existe neste fork WMK
 
-<b>TL;DR: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; single portrait image 🙎‍♂️  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; audio 🎤  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; talking head video 🎞.</b>
+Este fork esta sendo preparado para um **assistente com rosto**:
 
-<br>
+1. O usuario escreve uma pergunta.
+2. O Ollama gera a resposta.
+3. O Windows sintetiza um arquivo WAV em portugues.
+4. O SadTalker recebe uma imagem e esse WAV para gerar um MP4 animado.
+5. Futuramente, a interface podera exibir o avatar e reproduzir o video.
 
-</div>
+**Estado verificado:** Ollama e WAV funcionando; os pesos de 256 px foram baixados; a geracao do MP4 ainda NAO foi validada.
 
+Acesse a documentacao de instalacao especifica desta maquina em [wmk-assistente/README-PTBR.md](wmk-assistente/README-PTBR.md).
 
+## 3. Instalacao no Windows
 
-## Highlights
+### Requisitos
 
-- The license has been updated to Apache 2.0, and we've removed the non-commercial restriction
-- **SadTalker has now officially been integrated into Discord, where you can use it for free by sending files. You can also generate high-quailty videos from text prompts. Join: [![Discord](https://dcbadge.vercel.app/api/server/rrayYqZ4tf?style=flat)](https://discord.gg/rrayYqZ4tf)**
+- Windows 10/11;
+- Git;
+- Python 3.8 (a versao usada neste ambiente e 3.8.20);
+- FFmpeg para codificacao e manipulacao de audio/video;
+- Dependencias Python do projeto;
+- Pesos dos modelos na pasta `checkpoints/`.
 
-- We've published a [stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui) extension. Check out more details [here](docs/webui_extension.md). [Demo Video](https://user-images.githubusercontent.com/4397546/231495639-5d4bb925-ea64-4a36-a519-6389917dac29.mp4)
+O projeto original sugere instalar Python 3.8, Git e FFmpeg, clonar o repositorio, baixar os modelos e executar a interface Gradio com `start.bat` ou `webui.bat`, conforme a versao.
 
-- Full image mode is now available! [More details...](https://github.com/OpenTalker/SadTalker#full-bodyimage-generation)
+### Instalacao classica (referencia do projeto original)
 
-| still+enhancer in v0.0.1                 | still + enhancer   in v0.0.2       |   [input image @bagbag1815](https://twitter.com/bagbag1815/status/1642754319094108161) |
-|:--------------------: |:--------------------: | :----: |
-| <video  src="https://user-images.githubusercontent.com/48216707/229484996-5d7be64f-2553-4c9e-a452-c5cf0b8ebafe.mp4" type="video/mp4"> </video> | <video  src="https://user-images.githubusercontent.com/4397546/230717873-355b7bf3-d3de-49f9-a439-9220e623fce7.mp4" type="video/mp4"> </video>  | <img src='./examples/source_image/full_body_2.png' width='380'> 
+```bat
+git clone https://github.com/WalneyNF/SadTalker.git
+cd SadTalker
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-- Several new modes (Still, reference, and resize modes) are now available!
+**Atencao:** o arquivo `requirements.txt` original pode exigir ajustes de versoes e pacotes no Windows. O procedimento acima e de referencia, NAO foi validado integralmente nesta maquina. Para o historico real de instalacao no disco D:, use o [manual WMK](wmk-assistente/README-PTBR.md).
 
-- We're happy to see more community demos on [bilibili](https://search.bilibili.com/all?keyword=sadtalker), [YouTube](https://www.youtube.com/results?search_query=sadtalker) and [X (#sadtalker)](https://twitter.com/search?q=%23sadtalker&src).
+### Instalacao realizada no computador WMK
 
-## Changelog 
+Diretorio: `D:\Ferramentas\SadTalker`
 
-The previous changelog can be found [here](docs/changlelog.md).
+Ambiente Python: `.venv\Scripts\python.exe`
 
-- __[2023.06.12]__: Added more new features in WebUI extension, see the discussion [here](https://github.com/OpenTalker/SadTalker/discussions/386).
+PyTorch instalado e testado: `2.0.1+cpu`. Esta configuracao evita depender da GPU de 2 GB.
 
-- __[2023.06.05]__: Released a new 512x512px (beta) face model. Fixed some bugs and improve the performance.
+Para inspecionar a instalacao:
 
-- __[2023.04.15]__: Added a WebUI Colab notebook by [@camenduru](https://github.com/camenduru/): [![sd webui-colab](https://img.shields.io/badge/Automatic1111-Colab-green)](https://colab.research.google.com/github/camenduru/stable-diffusion-webui-colab/blob/main/video/stable/stable_diffusion_1_5_video_webui_colab.ipynb)
+```bat
+cd /d D:\Ferramentas\SadTalker
+.venv\Scripts\python.exe -c "import torch; print(torch.__version__)"
+uv pip freeze --python .venv\Scripts\python.exe
+.venv\Scripts\python.exe inference.py --help
+```
 
-- __[2023.04.12]__: Added a more detailed WebUI installation document and fixed a problem when reinstalling.
+Se `inference.py --help` falhar, consulte o manual WMK para o diagnostico das dependencias.
 
-- __[2023.04.12]__: Fixed the WebUI safe issues becasue of 3rd-party packages, and optimized the output path in `sd-webui-extension`.
+## 4. Instalacao no Linux / Unix
 
-- __[2023.04.08]__: In v0.0.2, we added a logo watermark to the generated video to prevent abuse. _This watermark has since been removed in a later release._
+Procedimento historico do projeto original:
 
-- __[2023.04.08]__: In v0.0.2, we added features for full image animation and a link to download checkpoints from Baidu. We also optimized the enhancer logic.
+```bash
+git clone https://github.com/OpenTalker/SadTalker.git
+cd SadTalker
+conda create -n sadtalker python=3.8
+conda activate sadtalker
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
+conda install ffmpeg
+pip install -r requirements.txt
+```
 
-## To-Do
+Esse comando PyTorch usa CUDA 11.3 e **nao** e apropriado para todas as GPUs ou maquinas sem NVIDIA. Adapte ao hardware. O Coqui TTS era opcional na demonstracao Gradio (`pip install TTS`).
 
-We're tracking new updates in [issue #280](https://github.com/OpenTalker/SadTalker/issues/280).
+Para macOS, Docker e WSL, consulte [docs/install.md](docs/install.md). Esses ambientes nao foram testados neste fork.
 
-## Troubleshooting
+## 5. Download dos modelos
 
-If you have any problems, please read our [FAQs](docs/FAQ.md) before opening an issue.
-
-
-
-## 1. Installation.
-
-Community tutorials: [中文Windows教程 (Chinese Windows tutorial)](https://www.bilibili.com/video/BV1Dc411W7V6/) | [日本語コース (Japanese tutorial)](https://br-d.fanbox.cc/posts/5685086).
-
-### Linux/Unix
-
-1. Install [Anaconda](https://www.anaconda.com/), Python and `git`.
-
-2. Creating the env and install the requirements.
-  ```bash
-  git clone https://github.com/OpenTalker/SadTalker.git
-
-  cd SadTalker 
-
-  conda create -n sadtalker python=3.8
-
-  conda activate sadtalker
-
-  pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
-
-  conda install ffmpeg
-
-  pip install -r requirements.txt
-
-  ### Coqui TTS is optional for gradio demo. 
-  ### pip install TTS
-
-  ```  
-### Windows
-
-A video tutorial in chinese is available [here](https://www.bilibili.com/video/BV1Dc411W7V6/). You can also follow the following instructions:
-
-1. Install [Python 3.8](https://www.python.org/downloads/windows/) and check "Add Python to PATH".
-2. Install [git](https://git-scm.com/download/win) manually or using [Scoop](https://scoop.sh/): `scoop install git`.
-3. Install `ffmpeg`, following [this tutorial](https://www.wikihow.com/Install-FFmpeg-on-Windows) or using [scoop](https://scoop.sh/): `scoop install ffmpeg`.
-4. Download the SadTalker repository by running `git clone https://github.com/Winfredy/SadTalker.git`.
-5. Download the checkpoints and gfpgan models in the [downloads section](#2-download-models).
-6. Run `start.bat` from Windows Explorer as normal, non-administrator, user, and a Gradio-powered WebUI demo will be started.
-
-### macOS
-
-A tutorial on installing SadTalker on macOS can be found [here](docs/install.md).
-
-### Docker, WSL, etc
-
-Please check out additional tutorials [here](docs/install.md).
-
-## 2. Download Models
-
-You can run the following script on Linux/macOS to automatically download all the models:
+No Linux/macOS, o projeto original oferece:
 
 ```bash
 bash scripts/download_models.sh
 ```
 
-We also provide an offline patch (`gfpgan/`), so no model will be downloaded when generating.
+Downloads oficiais: [GitHub Releases](https://github.com/OpenTalker/SadTalker/releases) | [Google Drive](https://drive.google.com/file/d/1gwWh45pF7aelNP_P78uDJL8Sycep-K7j/view?usp=sharing) | [Baidu](https://pan.baidu.com/s/1kb1BCPaLOWX1JJb9Czbn6w?pwd=sadt) (senha `sadt`).
 
-### Pre-Trained Models
+### Pesos atuais
 
-* [Google Drive](https://drive.google.com/file/d/1gwWh45pF7aelNP_P78uDJL8Sycep-K7j/view?usp=sharing)
-* [GitHub Releases](https://github.com/OpenTalker/SadTalker/releases)
-* [Baidu (百度云盘)](https://pan.baidu.com/s/1kb1BCPaLOWX1JJb9Czbn6w?pwd=sadt) (Password: `sadt`)
+| Arquivo | Funcao |
+|---|---|
+| `checkpoints/SadTalker_V0.0.2_256.safetensors` | Pesos agrupados para animacao em 256 px |
+| `checkpoints/SadTalker_V0.0.2_512.safetensors` | Modelo alternativo de 512 px |
+| `checkpoints/mapping_00109-model.pth.tar` | Rede de mapeamento de movimentos |
+| `checkpoints/mapping_00229-model.pth.tar` | Rede de mapeamento de movimentos |
+| `gfpgan/weights/` | Pesos de deteccao, alinhamento e aprimoramento facial |
 
-<!-- TODO add Hugging Face links -->
+**Baixados e verificados neste computador:** modelo 256 e ambos os mapeamentos. O modelo 512 e os pesos opcionais do GFPGAN nao foram confirmados como instalados.
 
-### GFPGAN Offline Patch
+### Modelos legados
 
-* [Google Drive](https://drive.google.com/file/d/19AIBsmfcHW6BRJmeqSFlG5fL445Xmsyi?usp=sharing)
-* [GitHub Releases](https://github.com/OpenTalker/SadTalker/releases)
-* [Baidu (百度云盘)](https://pan.baidu.com/s/1P4fRgk9gaSutZnn8YW034Q?pwd=sadt) (Password: `sadt`)
+A versao antiga utilizava arquivos separados: `auido2exp_00300-model.pth`, `auido2pose_00140-model.pth`, `facevid2vid_00189-model.pth.tar`, `epoch_20.pth`, `wav2lip.pth`, `shape_predictor_68_face_landmarks.dat`, alem das pastas `BFM` e `hub`. Normalmente, prefira os pesos agrupados da versao atual, salvo quando `--old_version` for necessario.
 
-<!-- TODO add Hugging Face links -->
+## 6. Primeiro uso
 
+### Interface grafica do projeto original
 
-<details><summary>Model Details</summary>
-
-
-Model explains:
-
-##### New version 
-| Model | Description
-| :--- | :----------
-|checkpoints/mapping_00229-model.pth.tar | Pre-trained MappingNet in Sadtalker.
-|checkpoints/mapping_00109-model.pth.tar | Pre-trained MappingNet in Sadtalker.
-|checkpoints/SadTalker_V0.0.2_256.safetensors | packaged sadtalker checkpoints of old version, 256 face render).
-|checkpoints/SadTalker_V0.0.2_512.safetensors | packaged sadtalker checkpoints of old version, 512 face render).
-|gfpgan/weights | Face detection and enhanced models used in `facexlib` and `gfpgan`.
-  
-  
-##### Old version
-| Model | Description
-| :--- | :----------
-|checkpoints/auido2exp_00300-model.pth | Pre-trained ExpNet in Sadtalker.
-|checkpoints/auido2pose_00140-model.pth | Pre-trained PoseVAE in Sadtalker.
-|checkpoints/mapping_00229-model.pth.tar | Pre-trained MappingNet in Sadtalker.
-|checkpoints/mapping_00109-model.pth.tar | Pre-trained MappingNet in Sadtalker.
-|checkpoints/facevid2vid_00189-model.pth.tar | Pre-trained face-vid2vid model from [the reappearance of face-vid2vid](https://github.com/zhanglonghao1992/One-Shot_Free-View_Neural_Talking_Head_Synthesis).
-|checkpoints/epoch_20.pth | Pre-trained 3DMM extractor in [Deep3DFaceReconstruction](https://github.com/microsoft/Deep3DFaceReconstruction).
-|checkpoints/wav2lip.pth | Highly accurate lip-sync model in [Wav2lip](https://github.com/Rudrabha/Wav2Lip).
-|checkpoints/shape_predictor_68_face_landmarks.dat | Face landmark model used in [dilb](http://dlib.net/). 
-|checkpoints/BFM | 3DMM library file.  
-|checkpoints/hub | Face detection models used in [face alignment](https://github.com/1adrianb/face-alignment).
-|gfpgan/weights | Face detection and enhanced models used in `facexlib` and `gfpgan`.
-
-The final folder will be shown as:
-
-<img width="331" alt="image" src="https://user-images.githubusercontent.com/4397546/232511411-4ca75cbf-a434-48c5-9ae0-9009e8316484.png">
-
-
-</details>
-
-## 3. Quick Start
-
-Please read our document on [best practices and configuration tips](docs/best_practice.md)
-
-### WebUI Demos
-
-**Online Demo**: [HuggingFace](https://huggingface.co/spaces/vinthony/SadTalker) | [SDWebUI-Colab](https://colab.research.google.com/github/camenduru/stable-diffusion-webui-colab/blob/main/video/stable/stable_diffusion_1_5_video_webui_colab.ipynb) | [Colab](https://colab.research.google.com/github/Winfredy/SadTalker/blob/main/quick_demo.ipynb)
-
-**Local WebUI extension**: Please refer to [WebUI docs](docs/webui_extension.md).
-
-**Local gradio demo (recommanded)**: A Gradio instance similar to our [Hugging Face demo](https://huggingface.co/spaces/vinthony/SadTalker) can be run locally:
-
-```bash
-## you need manually install TTS(https://github.com/coqui-ai/TTS) via `pip install tts` in advanced.
+```bat
 python app_sadtalker.py
 ```
 
-You can also start it more easily:
+Ou execute `webui.bat` no Windows, quando as dependencias da interface estiverem instaladas. No Linux/macOS: `bash webui.sh`. A interface original usa Gradio.
 
-- windows: just double click `webui.bat`, the requirements will be installed automatically.
-- Linux/Mac OS: run `bash webui.sh` to start the webui.
+### Linha de comando: animar um rosto
 
+Exemplo simples, sem aprimoramento adicional:
 
-### CLI usage
-
-##### Animating a portrait image from default config:
-```bash
-python inference.py --driven_audio <audio.wav> \
-                    --source_image <video.mp4 or picture.png> \
-                    --enhancer gfpgan 
-```
-The results will be saved in `results/$SOME_TIMESTAMP/*.mp4`.
-
-##### Full body/image Generation:
-
-Using `--still` to generate a natural full body video. You can add `enhancer` to improve the quality of the generated video. 
-
-```bash
-python inference.py --driven_audio <audio.wav> \
-                    --source_image <video.mp4 or picture.png> \
-                    --result_dir <a file to store results> \
-                    --still \
-                    --preprocess full \
-                    --enhancer gfpgan 
+```bat
+cd /d D:\Ferramentas\SadTalker
+.venv\Scripts\python.exe inference.py --driven_audio examples\driven_audio\bus_chinese.wav --source_image examples\source_image\full_body_1.png --cpu --size 256
 ```
 
-More examples and configuration and tips can be founded in the [ >>> best practice documents <<<](docs/best_practice.md).
+**Este e um comando de teste sugerido; ainda nao foi confirmado que ele gera MP4 nesta instalacao.** A pasta de resultados e normalmente `results/`, com subpastas por execucao.
 
-## Citation
+Com aprimoramento facial, depois de instalar os modelos adicionais:
 
-If you find our work useful in your research, please consider citing:
+```bash
+python inference.py --driven_audio audio.wav --source_image rosto.png --enhancer gfpgan
+```
+
+Para animar uma imagem completa:
+
+```bash
+python inference.py --driven_audio audio.wav --source_image personagem.png --still --preprocess full
+```
+
+Use `python inference.py --help` para consultar todos os parametros. Veja [boas praticas](docs/best_practice.md).
+
+## 7. Assistente WMK — gerar voz
+
+Abra a interface local em [http://127.0.0.1:18765/](http://127.0.0.1:18765/) **com o servidor em execucao**.
+
+O painel permite escrever texto, gerar um WAV, ouvir e salvar o arquivo. Os WAVs sao armazenados em `wmk-assistente/resultados/`. O servidor escuta apenas em `127.0.0.1`, nao e um servico publico.
+
+A integracao completa WAV → SadTalker → MP4 permanece em desenvolvimento.
+
+## 8. Solucao de problemas
+
+| Sintoma | Verificacao ou correcao |
+|---|---|
+| `No module named 'librosa'` | Instalar a versao compativel com Python 3.8 (neste ambiente: 0.9.2) |
+| `No module named 'cv2'` | Instalar `opencv-python` (testado: 4.8.1.78) |
+| `No module named 'tqdm'` | Instalar `tqdm` e demais dependencias de processamento |
+| `No module named 'facexlib'` | Instalar `facexlib` (testado: 0.3.0) |
+| Download de dependencias sem progresso | Verificar rede, cache, espaco livre e processos concorrentes |
+| Rosto nao detectado | Testar primeiro uma fotografia frontal realista e boa iluminacao |
+| GPU sem memoria | Utilizar `--cpu --size 256`; o processamento pode ser lento |
+| FFmpeg nao encontrado | Instalar FFmpeg e verificar `ffmpeg -version` |
+| Falta de pesos | Conferir `checkpoints/` e os arquivos auxiliares exigidos |
+
+Consulte tambem a [FAQ original](docs/FAQ.md) e o [registro de alteracoes](docs/changlelog.md).
+
+## 9. Historico do projeto original
+
+- **12/06/2023:** melhorias na extensao WebUI.
+- **05/06/2023:** modelo facial experimental de 512 × 512 px e correcoes.
+- **15/04/2023:** novo notebook Colab para WebUI.
+- **12/04/2023:** documentacao de instalacao WebUI, seguranca e melhorias de caminhos.
+- **08/04/2023:** recursos de animacao de imagem completa e aprimoramento facial. Uma marca d'agua adicionada nessa versao foi removida posteriormente.
+
+Acompanhe as [discussoes](https://github.com/OpenTalker/SadTalker/discussions/386) e [pendencias](https://github.com/OpenTalker/SadTalker/issues/280) originais.
+
+## 10. Referencia cientifica
+
+Se utilizar o SadTalker em pesquisa, cite o trabalho original:
 
 ```bibtex
 @article{zhang2022sadtalker,
@@ -254,45 +204,32 @@ If you find our work useful in your research, please consider citing:
 }
 ```
 
-## Acknowledgements
+Autores originais: Wenxuan Zhang, Xiaodong Cun, Xuan Wang, Yong Zhang, Xi Shen, Yu Guo, Ying Shan e Fei Wang. Instituicoes mencionadas na publicacao incluem Xi'an Jiaotong University, Tencent AI Lab e Ant Group.
 
-Facerender code borrows heavily from [zhanglonghao's reproduction of face-vid2vid](https://github.com/zhanglonghao1992/One-Shot_Free-View_Neural_Talking_Head_Synthesis) and [PIRender](https://github.com/RenYurui/PIRender). We thank the authors for sharing their wonderful code. In training process, we also used the model from [Deep3DFaceReconstruction](https://github.com/microsoft/Deep3DFaceReconstruction) and [Wav2lip](https://github.com/Rudrabha/Wav2Lip). We thank for their wonderful work.
+## 11. Agradecimentos e projetos relacionados
 
-We also use the following 3rd-party libraries:
+A implementacao original aproveita trabalhos de [face-vid2vid](https://github.com/zhanglonghao1992/One-Shot_Free-View_Neural_Talking_Head_Synthesis), [PIRender](https://github.com/RenYurui/PIRender), [Deep3DFaceReconstruction](https://github.com/microsoft/Deep3DFaceReconstruction) e [Wav2Lip](https://github.com/Rudrabha/Wav2Lip).
 
-- **Face Utils**: https://github.com/xinntao/facexlib
-- **Face Enhancement**: https://github.com/TencentARC/GFPGAN
-- **Image/Video Enhancement**:https://github.com/xinntao/Real-ESRGAN
+Bibliotecas relacionadas: [facexlib](https://github.com/xinntao/facexlib), [GFPGAN](https://github.com/TencentARC/GFPGAN) e [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN).
 
-## Extensions:
+Extensao comunitaria: [SadTalker-Video-Lip-Sync](https://github.com/Zz-ww/SadTalker-Video-Lip-Sync).
 
-- [SadTalker-Video-Lip-Sync](https://github.com/Zz-ww/SadTalker-Video-Lip-Sync) from [@Zz-ww](https://github.com/Zz-ww): SadTalker for Video Lip Editing
+Outras pesquisas relacionadas: [StyleHEAT](https://github.com/FeiiYin/StyleHEAT), [CodeTalker](https://github.com/Doubiiu/CodeTalker), [VideoReTalking](https://github.com/vinthony/video-retalking), [DPE](https://github.com/Carlyx/DPE), [3D GAN Inversion](https://github.com/FeiiYin/SPI/) e [T2M-GPT](https://github.com/Mael-zys/T2M-GPT).
 
-## Related Works
-- [StyleHEAT: One-Shot High-Resolution Editable Talking Face Generation via Pre-trained StyleGAN (ECCV 2022)](https://github.com/FeiiYin/StyleHEAT)
-- [CodeTalker: Speech-Driven 3D Facial Animation with Discrete Motion Prior (CVPR 2023)](https://github.com/Doubiiu/CodeTalker)
-- [VideoReTalking: Audio-based Lip Synchronization for Talking Head Video Editing In the Wild (SIGGRAPH Asia 2022)](https://github.com/vinthony/video-retalking)
-- [DPE: Disentanglement of Pose and Expression for General Video Portrait Editing (CVPR 2023)](https://github.com/Carlyx/DPE)
-- [3D GAN Inversion with Facial Symmetry Prior (CVPR 2023)](https://github.com/FeiiYin/SPI/)
-- [T2M-GPT: Generating Human Motion from Textual Descriptions with Discrete Representations (CVPR 2023)](https://github.com/Mael-zys/T2M-GPT)
+## 12. Licencas, privacidade e uso responsavel
 
-## Disclaimer
+**O SadTalker nao e um produto oficial da Tencent.**
 
-This is not an official product of Tencent. 
+Antes de usar ou distribuir, leia a licenca do codigo e as declaracoes de propriedade intelectual dos modelos e recursos. A licenca do codigo nao implica necessariamente licenca irrestrita sobre todos os modelos, imagens e audios.
 
-```
-1. Please carefully read and comply with the open-source license applicable to this code before using it. 
-2. Please carefully read and comply with the intellectual property declaration applicable to this code before using it.
-3. This open-source code runs completely offline and does not collect any personal information or other data. If you use this code to provide services to end-users and collect related data, please take necessary compliance measures according to applicable laws and regulations (such as publishing privacy policies, adopting necessary data security strategies, etc.). If the collected data involves personal information, user consent must be obtained (if applicable). Any legal liabilities arising from this are unrelated to Tencent.
-4. Without Tencent's written permission, you are not authorized to use the names or logos legally owned by Tencent, such as "Tencent." Otherwise, you may be liable for legal responsibilities.
-5. This open-source code does not have the ability to directly provide services to end-users. If you need to use this code for further model training or demos, as part of your product to provide services to end-users, or for similar use, please comply with applicable laws and regulations for your product or service. Any legal liabilities arising from this are unrelated to Tencent.
-6. It is prohibited to use this open-source code for activities that harm the legitimate rights and interests of others (including but not limited to fraud, deception, infringement of others' portrait rights, reputation rights, etc.), or other behaviors that violate applicable laws and regulations or go against social ethics and good customs (including providing incorrect or false information, spreading pornographic, terrorist, and violent information, etc.). Otherwise, you may be liable for legal responsibilities.
-```
+O projeto original informa que seu codigo aberto pode funcionar offline e nao coleta dados pessoais por conta propria. **Essa declaracao nao abrange automaticamente integracoes adicionadas ao fork**, como Ollama, APIs, interfaces web ou servicos de terceiros. Se um produto coletar dados, o responsavel devera observar a legislacao aplicavel, inclusive a LGPD no Brasil, publicar informacoes de privacidade e obter consentimentos quando exigidos.
 
-LOGO: color and font suggestion: [ChatGPT](https://chat.openai.com), logo font: [Montserrat Alternates
-](https://fonts.google.com/specimen/Montserrat+Alternates?preview.text=SadTalker&preview.text_type=custom&query=mont).
+Nao use imagens ou vozes de pessoas sem autorizacao adequada. Sao proibidos usos para fraude, personificacao enganosa, violacao de direitos de imagem, reputacao, disseminacao ilegal de conteudo ou outras condutas ilicitas. Nao utilize marcas ou logotipos de terceiros como se houvesse endosso oficial.
 
-All the copyrights of the demo images and audio are from community users or the generation from stable diffusion. Feel free to contact us if you would like use to remove them.
+Os direitos das imagens e dos audios de demonstracao pertencem aos respectivos titulares, conforme informado pelo projeto original.
 
+---
 
-<!-- Spelling fixed on Tuesday, September 12, 2023 by @fakerybakery (https://github.com/fakerybakery). These changes are licensed under the Apache 2.0 license. -->
+**Creditos da integracao e documentacao em portugues:** Walney Moreira Klein — walneyk@hotmail.com.
+
+**Preservacao de autoria:** o SadTalker foi criado pelos autores originais citados acima. Este fork acrescenta integracoes, testes e documentacao; nao reivindica a autoria do modelo original.
